@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول - DronesExpress</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>🔐 تسجيل الدخول</h2>
+    <input type="text" id="usernameInput" placeholder="اسم المستخدم" />
+    <input type="password" id="passwordInput" placeholder="كلمة المرور" />
+    <button onclick="login()">دخول</button>
+    <p id="errorMsg" class="error" style="display:none;">❌ اسم المستخدم أو كلمة المرور غير صحيحة</p>
+  </div>
+
+  <script>
+    // إنشاء مستخدمين افتراضيين عند أول زيارة
+    if (!localStorage.getItem("users")) {
+      localStorage.setItem("users", JSON.stringify([
+        { username: "admin", password: "admin123", role: "admin" },
+        { username: "agent1", password: "agent123", role: "agent" }
+      ]));
+    }
+
+    function login() {
+      const username = document.getElementById("usernameInput").value.trim();
+      const password = document.getElementById("passwordInput").value;
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("errorMsg").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
